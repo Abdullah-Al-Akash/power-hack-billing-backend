@@ -98,6 +98,7 @@ async function run() {
 }
 run().catch(console.dir);
 
+// Root API
 app.get('/', (req, res) => {
         res.send('Hello Power Hack!')
 })
