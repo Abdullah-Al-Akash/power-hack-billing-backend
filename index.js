@@ -17,6 +17,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
         try {
                 await client.connect();
+                console.log("Database Connected")
                 const informationsCollection = client.db("power-hack-pay-bill").collection("informations");
 
                 // Load All Billing Information
@@ -27,11 +28,36 @@ async function run() {
                         res.send(billingList)
                 })
 
+                // Get Count:
+                app.get("/bill-count", async (req, res) => {
+                        const query = {};
+                        const cursor = informationsCollection.find(query);
+                        const count = await cursor.count();
+                        res.send({ count });
+                })
+
                 // Add New Billing Information:
                 app.post('/api/add-billing', async (req, res) => {
                         const newBilling = req.body;
                         const insertNewBilling = await informationsCollection.insertOne(newBilling);
                         res.send(insertNewBilling);
+                })
+
+                // Update Billing Information
+                app.put('/api/update-billing/:id', async (req, res) => {
+                        const id = req.params.id;
+                        const updatedBill = req.body;
+                        const filterItem = { _id: ObjectId(id) };
+                        const options = { upsert: true };
+                        const updateDoc = {
+                                $set: {
+                                        name: updatedBill.name,
+                                        phone: updatedBill.phone,
+                                        amount: updatedBill.amount,
+                                }
+                        }
+                        const result = await informationsCollection.updateOne(filterItem, updateDoc, options);
+                        res.send(result);
                 })
 
                 // Delete Bill Information:
