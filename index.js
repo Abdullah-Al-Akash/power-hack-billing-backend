@@ -25,8 +25,15 @@ async function run() {
                 app.get('/api/billing-list', async (req, res) => {
                         const page = parseInt(req.query.page);
                         const size = parseInt(req.query.size);
+                        const email = req.query.email;
 
-                        const query = {};
+                        let query;
+                        if (email) {
+                                query = { email: email }
+                        }
+                        else {
+                                query = {};
+                        }
                         const cursor = informationsCollection.find(query);
 
                         let billingList;
@@ -41,6 +48,15 @@ async function run() {
 
                 // Get Count:
                 app.get("/bill-count", async (req, res) => {
+                        const email = req.query.email;
+                        let query;
+                        if (email) {
+                                query = { email: email }
+                        }
+                        else {
+                                query = {}
+                        }
+                        const cursor = informationsCollection.find(query);
                         const count = await informationsCollection.estimatedDocumentCount();
                         res.send({ count });
                 })
