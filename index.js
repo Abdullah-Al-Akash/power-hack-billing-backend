@@ -19,6 +19,7 @@ async function run() {
                 await client.connect();
                 console.log("Database Connected")
                 const informationsCollection = client.db("power-hack-pay-bill").collection("informations");
+                const memberCollection = client.db("power-hack-pay-bill").collection("member");
 
                 // Load All Billing Information
                 app.get('/api/billing-list', async (req, res) => {
@@ -74,6 +75,21 @@ async function run() {
                         const query = { _id: ObjectId(id) };
                         const deletedBill = await informationsCollection.deleteOne(query);
                         res.send(deletedBill);
+                })
+
+
+                // Registration People:
+                app.post('/registration', async (req, res) => {
+                        const newMember = req.body;
+                        const registrationInformation = await memberCollection.insertOne(newMember);
+                        res.send(registrationInformation);
+                })
+                // Load All Member:
+                app.get('/members', async (req, res) => {
+                        const query = {};
+                        const cursor = memberCollection.find(query);
+                        const members = await cursor.toArray();
+                        res.send(members);
                 })
         }
         finally {
