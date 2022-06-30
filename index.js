@@ -19,11 +19,19 @@ async function run() {
                 await client.connect();
                 const informationsCollection = client.db("power-hack-pay-bill").collection("informations");
 
+                // Load All Billing Information
                 app.get('/api/billing-list', async (req, res) => {
                         const query = {};
                         const cursor = informationsCollection.find(query);
                         const billingList = await cursor.toArray();
                         res.send(billingList)
+                })
+
+                // Add New Billing Information:
+                app.post('/api/add-billing', async (req, res) => {
+                        const newBilling = req.body;
+                        const insertNewBilling = await informationsCollection.insertOne(newBilling);
+                        res.send(insertNewBilling);
                 })
         }
         finally {
