@@ -22,17 +22,25 @@ async function run() {
 
                 // Load All Billing Information
                 app.get('/api/billing-list', async (req, res) => {
+                        const page = parseInt(req.query.page);
+                        const size = parseInt(req.query.size);
+
                         const query = {};
                         const cursor = informationsCollection.find(query);
-                        const billingList = await cursor.toArray();
+
+                        let billingList;
+                        if (page || size) {
+                                billingList = await cursor.skip(page * size).limit(size).toArray();
+                        }
+                        else {
+                                billingList = await cursor.toArray();
+                        }
                         res.send(billingList)
                 })
 
                 // Get Count:
                 app.get("/bill-count", async (req, res) => {
-                        const query = {};
-                        const cursor = informationsCollection.find(query);
-                        const count = await cursor.count();
+                        const count = await informationsCollection.estimatedDocumentCount();
                         res.send({ count });
                 })
 
