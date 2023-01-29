@@ -1,5 +1,5 @@
 # PowerHack
-<h3>Live Site: <a target="_blank" href="">PowerHack</a></h3>
+<h3>Live Site: <a target="_blank" href="https://powerhack.netlify.app/">PowerHack</a></h3>
 <br>
 <h4 className="font-bold text-sm">For Admin Credential: <br />Email: admin@gmail.com <br /> Password: 123456</h4>
                                                 <h4 className="font-bold text-sm text-red-500">You can also register here! But you will only see your own bill-list there!</h4>
