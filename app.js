@@ -53,7 +53,7 @@ async function run() {
                         else {
                                 query = {};
                         }
-                        const cursor = informationsCollection.find(query).sort({ "_id": -1 });
+                        const cursor = informationsCollection.find(query);
 
                         let billingList;
                         if (page || size) {
