@@ -35,7 +35,6 @@ const verifyJWT = (req, res, next) => {
 
 async function run() {
         try {
-                await client.connect();
                 console.log("Database Connected")
                 const informationsCollection = client.db("power-hack-pay-bill").collection("informations");
                 const memberCollection = client.db("power-hack-pay-bill").collection("member");
